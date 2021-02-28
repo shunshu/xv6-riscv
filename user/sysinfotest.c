@@ -21,14 +21,16 @@ countfree()
   uint64 sz0 = (uint64)sbrk(0);
   struct sysinfo info;
   int n = 0;
-
+ 
   while(1){
     if((uint64)sbrk(PGSIZE) == 0xffffffffffffffff){
       break;
     }
     n += PGSIZE;
   }
+
   sinfo(&info);
+
   if (info.freemem != 0) {
     printf("FAIL: there is no free mem, but sysinfo.freemem=%d\n",
       info.freemem);
@@ -42,7 +44,7 @@ void
 testmem() {
   struct sysinfo info;
   uint64 n = countfree();
-  
+
   sinfo(&info);
 
   if (info.freemem!= n) {
@@ -68,6 +70,7 @@ testmem() {
   }
 
   sinfo(&info);
+  
     
   if (info.freemem != n) {
     printf("FAIL: free mem %d (bytes) instead of %d\n", n, info.freemem);
